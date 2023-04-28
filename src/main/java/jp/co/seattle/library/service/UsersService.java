@@ -41,15 +41,28 @@ public class UsersService {
 	 * @param password パスワード
 	 * @return ユーザー情報
 	 */
-	public UserInfo selectUserInfo(String email, String password) {
+	public String selectUserInfo(String email, String password) {
 		try {
 			String sql = "SELECT email, password FROM users WHERE email = '" + email + "' AND password = '" + password
 					+ "'";
 			UserInfo selectedUserInfo = jdbcTemplate.queryForObject(sql, new UserCountRowMapper());
 			return selectedUserInfo;
 		} catch (Exception e) {
-			return null;
+			return "redirect:/null";
 		}
 	}
 
 }
+
+
+		if (password.length() >= 8 && password.matches("[0-9a-zA-Z]+")) {
+			if (password.equals(passwordForCheck)) {
+				
+				UserInfo userInfo = new UserInfo();
+				userInfo.setEmail(email);
+				userInfo.setPassword(password);
+				usersService.registUser(userInfo);
+				return "redirect:/login";
+			}else{model.addAttribute("errorMessage","パスワードが一致しません。");return"createAccount";}}else{model.addAttribute("errorMessage","パスワードは8文字以上かつ半角英数字に設定してください");
+
+return"redirect/passwordreset";}}}
